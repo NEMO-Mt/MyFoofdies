@@ -1,0 +1,238 @@
+<main class="min-h-screen bg-orange-50 px-4 py-10 sm:px-6">
+  <div class="mx-auto max-w-7xl">
+    <!-- หัวข้อ -->
+    <section>
+      <p class="font-medium text-orange-500">
+        ค้นหาสิ่งที่ต้องการ
+      </p>
+
+      <h1 class="text-3xl font-bold text-gray-900">
+        ค้นหาร้านและเมนูอาหาร
+      </h1>
+
+      <!-- ช่องค้นหา -->
+      <div class="mt-6 flex w-full overflow-hidden rounded-xl bg-white shadow-sm">
+        <input
+          #searchInput
+          type="search"
+          [value]="keyword"
+          placeholder="ค้นหาชื่อร้านหรือชื่อเมนู..."
+          class="w-full px-5 py-3 outline-none"
+          (input)="updateKeyword(searchInput.value)"
+        />
+
+        <button
+          type="button"
+          class="bg-orange-500 px-6 py-3 font-medium text-white transition hover:bg-orange-600"
+          (click)="updateKeyword(searchInput.value)"
+        >
+          ค้นหา
+        </button>
+      </div>
+    </section>
+
+    <!-- ปุ่มกรองประเภทร้าน -->
+    <section class="mt-8">
+      <h2 class="text-lg font-bold text-gray-800">
+        ประเภทร้านอาหาร
+      </h2>
+
+      <div class="mt-3 flex flex-wrap gap-3">
+        @for (type of restaurantTypes; track type) {
+          <button
+            type="button"
+            class="rounded-full border px-4 py-2 text-sm font-medium transition hover:border-orange-500 hover:bg-orange-100"
+            [class.border-orange-500]="selectedType === type"
+            [class.bg-orange-500]="selectedType === type"
+            [class.text-white]="selectedType === type"
+            [class.border-gray-200]="selectedType !== type"
+            [class.bg-white]="selectedType !== type"
+            [class.text-gray-700]="selectedType !== type"
+            (click)="selectRestaurantType(type)"
+          >
+            {{ type }}
+          </button>
+        }
+      </div>
+    </section>
+
+    <!-- สรุปคำค้นหา -->
+    <section class="mt-8 rounded-xl border border-orange-100 bg-white p-4">
+      @if (keyword) {
+        <p class="text-gray-700">
+          ผลการค้นหาคำว่า
+          <span class="font-bold text-orange-600">
+            "{{ keyword }}"
+          </span>
+        </p>
+      } @else {
+        <p class="text-gray-700">
+          กำลังแสดงข้อมูลทั้งหมด
+        </p>
+      }
+
+      <p class="mt-1 text-sm text-gray-500">
+        ประเภทที่เลือก: {{ selectedType }}
+      </p>
+    </section>
+
+    <!-- ผลลัพธ์ร้านอาหาร -->
+    <section class="mt-10">
+      <div class="flex items-end justify-between">
+        <div>
+          <p class="font-medium text-orange-500">
+            Restaurants
+          </p>
+
+          <h2 class="text-2xl font-bold text-gray-900">
+            ร้านอาหาร
+          </h2>
+        </div>
+
+        <p class="text-sm text-gray-500">
+          พบ {{ filteredRestaurans.length }} ร้าน
+        </p>
+      </div>
+
+      @if (filteredRestaurans.length > 0) {
+        <div class="mt-5 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          @for (
+            restaurant of filteredRestaurans;
+            track restaurant.id
+          ) {
+            <article
+              class="rounded-2xl border border-orange-100 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg"
+            >
+              <div class="flex items-start gap-4">
+                <div
+                  class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-orange-100 text-2xl"
+                >
+                  🍽️
+                </div>
+
+                <div>
+                  <p class="text-sm font-medium text-orange-500">
+                    {{ restaurant.restaurant_type }}
+                  </p>
+
+                  <h3 class="mt-1 text-xl font-bold text-gray-900">
+                    {{ restaurant.name }}
+                  </h3>
+                </div>
+              </div>
+
+              <p class="mt-4 text-sm leading-6 text-gray-600">
+                {{ restaurant.location }}
+              </p>
+            </article>
+          }
+        </div>
+      } @else {
+        <div class="mt-5 rounded-2xl bg-white p-10 text-center shadow-sm">
+          <p class="text-4xl">🔍</p>
+
+          <p class="mt-3 text-lg font-bold text-gray-800">
+            ไม่พบร้านอาหาร
+          </p>
+
+          <p class="mt-1 text-sm text-gray-500">
+            ลองเปลี่ยนคำค้นหาหรือเลือกประเภทอื่น
+          </p>
+        </div>
+      }
+    </section>
+
+    <!-- ผลลัพธ์เมนูอาหาร -->
+    <section class="mt-12">
+      <div class="flex items-end justify-between">
+        <div>
+          <p class="font-medium text-orange-500">
+            Food Menu
+          </p>
+
+          <h2 class="text-2xl font-bold text-gray-900">
+            เมนูอาหาร
+          </h2>
+        </div>
+
+        <p class="text-sm text-gray-500">
+          พบ {{ filteredFoods.length }} เมนู
+        </p>
+      </div>
+
+      @if (filteredFoods.length > 0) {
+        <div class="mt-5 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          @for (food of filteredFoods; track food.id) {
+            <article
+              class="group overflow-hidden rounded-2xl border border-orange-100 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg"
+            >
+              <div class="relative overflow-hidden">
+                <img
+                  class="h-52 w-full object-cover transition duration-300 group-hover:scale-105"
+                  [src]="food.image_path"
+                  [alt]="food.name"
+                />
+
+                <span
+                  class="absolute left-3 top-3 rounded-full bg-orange-500 px-3 py-1 text-xs font-medium text-white"
+                >
+                  {{ food.food_type }}
+                </span>
+              </div>
+
+              <div class="flex min-h-40 flex-col p-5">
+                <h3 class="text-xl font-bold text-gray-900">
+                  {{ food.name }}
+                </h3>
+
+                <p class="mt-1 text-sm text-gray-600">
+                  ร้าน {{ getRestaurantName(food.restaurant_id) }}
+                </p>
+
+                <div class="mt-auto flex items-end justify-between pt-5">
+                  <div>
+                    <p class="text-xs text-gray-500">
+                      สถานะ
+                    </p>
+
+                    @if (food.is_available) {
+                      <p class="font-medium text-green-600">
+                        พร้อมจำหน่าย
+                      </p>
+                    } @else {
+                      <p class="font-medium text-red-500">
+                        ไม่พร้อมจำหน่าย
+                      </p>
+                    }
+                  </div>
+
+                  <div class="text-right">
+                    <p class="text-xs text-gray-500">
+                      ราคา
+                    </p>
+
+                    <p class="text-2xl font-bold text-orange-600">
+                      ฿{{ food.price }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </article>
+          }
+        </div>
+      } @else {
+        <div class="mt-5 rounded-2xl bg-white p-10 text-center shadow-sm">
+          <p class="text-4xl">🍽️</p>
+
+          <p class="mt-3 text-lg font-bold text-gray-800">
+            ไม่พบเมนูอาหาร
+          </p>
+
+          <p class="mt-1 text-sm text-gray-500">
+            ลองเปลี่ยนคำค้นหาหรือเลือกประเภทอื่น
+          </p>
+        </div>
+      }
+    </section>
+  </div>
+</main>

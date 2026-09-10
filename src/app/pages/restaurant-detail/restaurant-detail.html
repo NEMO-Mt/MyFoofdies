@@ -1,0 +1,94 @@
+<main class="min-h-screen bg-orange-50 px-4 py-10 sm:px-6">
+    <div class="mx-auto max-w-7xl">
+        @if(restaurant) {
+        <section class="overflow-hidden text-center rounded-3xl bg-orange-500 px-6 py-14 text-white shadow-lg sm:px-10">
+            <h1 class="mt-5 text-3xl font-bold sm:text-5xl">{{restaurant.name}}</h1>
+        </section>
+        <section class="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div class="rounded-2xl bg-white p-6 shadow-sm">
+                <p class="text-sm font-medium text-orange-500">ประเภทร้านอาหาร</p>
+                <p class="mt-2 text-xl font-bold text-gray-900">{{restaurant.restaurant_type}}</p>
+            </div>
+            <div class="rounded-2xl bg-white p-6 shadow-sm">
+                <p class="text-sm font-medium text-orange-500">ที่อยู่</p>
+                <p class="mt-2 leading-7 text-gray-700">{{restaurant.location}}</p>
+            </div>
+        </section>
+        <section class="mt-12">
+        <div class="flex items-end justify-between">
+          <h2 class="text-3xl font-bold text-gray-900">
+            เมนูของร้าน
+          </h2>
+
+          <p class="text-sm text-gray-500">
+            {{ restaurantFoodItems.length }} เมนู
+          </p>
+        </div>
+
+        @if (restaurantFoodItems.length > 0) {
+          <!-- Grid ครอบเฉพาะการ์ดอาหาร -->
+          <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            @for (food of restaurantFoodItems; track food.id) {
+              <a [routerLink]="['/foods', food.id]"
+                class="group overflow-hidden rounded-2xl border border-orange-100 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl"
+              >
+                <div class="relative overflow-hidden">
+                  <img
+                    class="h-52 w-full object-cover transition duration-300 group-hover:scale-105"
+                    [src]="food.image_path"
+                    [alt]="food.name"
+                  />
+
+                  <span
+                    class="absolute left-3 top-3 rounded-full bg-orange-500 px-3 py-1 text-xs font-medium text-white"
+                  >
+                    {{ food.food_type }}
+                  </span>
+                </div>
+
+                <div class="flex min-h-40 flex-col p-5">
+                  <h3 class="text-xl font-bold text-gray-900">
+                    {{ food.name }}
+                  </h3>
+
+                  <p class="mt-1 text-sm text-gray-600">
+                    ร้าน {{ restaurant.name }}
+                  </p>
+
+                  <div class="mt-auto flex items-end justify-between pt-5">
+                    <div>
+                      <p class="text-xs text-gray-500">
+                        คะแนนรีวิว
+                      </p>
+
+                      <p class="mt-1 font-semibold text-yellow-600">
+                        ★ {{ getAverageRating(food.id) }} / 5
+                      </p>
+                    </div>
+
+                    <div class="text-right">
+                      <p class="text-xs text-gray-500">
+                        ราคา
+                      </p>
+
+                      <p class="text-2xl font-bold text-orange-600">
+                        ฿{{ food.price }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+            </a>
+            }
+          </div>
+        } @else {
+          <div class="mt-6 rounded-2xl bg-white p-10 text-center shadow-sm">
+            <p class="text-gray-600">
+              ร้านนี้ยังไม่มีเมนูอาหาร
+            </p>
+          </div>
+        }
+      </section>
+        }
+
+    </div>
+</main>

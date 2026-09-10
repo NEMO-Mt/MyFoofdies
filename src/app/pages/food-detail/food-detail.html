@@ -1,0 +1,169 @@
+<main class="min-h-screen bg-orange-50 px-4 py-10 sm:px-6">
+  <div class="mx-auto max-w-7xl">
+    @if (food) {
+      <section
+        class="grid overflow-hidden rounded-3xl bg-white shadow-lg lg:h-[720px] lg:grid-cols-2"
+      >
+        <!-- รูปอาหารฝั่งซ้าย -->
+        <div class="overflow-hidden">
+          <img
+            class="h-80 w-full object-cover lg:h-full"
+            [src]="food.image_path"
+            [alt]="food.name"
+          />
+        </div>
+
+        <!-- ข้อมูลและรีวิวฝั่งขวา -->
+        <div class="flex min-h-0 flex-col p-6 sm:p-8">
+          <!-- ประเภทและสถานะ -->
+          <div class="flex items-start justify-between gap-4">
+            <span
+              class="rounded-full bg-orange-100 px-4 py-2 text-sm font-medium text-orange-600"
+            >
+              {{ food.food_type }}
+            </span>
+
+            @if (food.is_available) {
+              <span
+                class="rounded-full bg-green-100 px-4 py-2 text-sm font-medium text-green-600"
+              >
+                พร้อมจำหน่าย
+              </span>
+            } @else {
+              <span
+                class="rounded-full bg-red-100 px-4 py-2 text-sm font-medium text-red-500"
+              >
+                ไม่พร้อมจำหน่าย
+              </span>
+            }
+          </div>
+
+          <!-- ชื่ออาหาร -->
+          <h1 class="mt-5 text-3xl font-bold text-gray-900">
+            {{ food.name }}
+          </h1>
+
+          <!-- ข้อมูลร้าน -->
+          @if (restaurant) {
+            <p class="mt-3 text-gray-600">
+              ร้าน
+              <span class="font-medium text-orange-600">
+                {{ restaurant.name }}
+              </span>
+            </p>
+
+            <p class="mt-2 text-sm leading-6 text-gray-500">
+              {{ restaurant.location }}
+            </p>
+          }
+
+          <!-- คะแนนและราคา -->
+          <div class="mt-6 grid grid-cols-2 gap-4">
+            <div class="rounded-2xl bg-yellow-50 p-4">
+              <p class="text-xs text-gray-500">
+                คะแนนเฉลี่ย
+              </p>
+
+              <p class="mt-1 text-xl font-bold text-yellow-600">
+                ★ {{ getAverageRating() }} / 5
+              </p>
+            </div>
+
+            <div class="rounded-2xl bg-orange-50 p-4 text-right">
+              <p class="text-xs text-gray-500">
+                ราคา
+              </p>
+
+              <p class="mt-1 text-2xl font-bold text-orange-600">
+                ฿{{ food.price }}
+              </p>
+            </div>
+          </div>
+
+          <!-- รีวิว -->
+          <div
+            class="mt-6 flex min-h-0 flex-1 flex-col border-t border-orange-100 pt-5"
+          >
+            <div class="flex items-end justify-between">
+              <div>
+                <p class="text-sm font-medium text-orange-500">
+                  Customer Reviews
+                </p>
+
+                <h2 class="text-2xl font-bold text-gray-900">
+                  รีวิวจากผู้ใช้งาน
+                </h2>
+              </div>
+
+              <p class="text-sm text-gray-500">
+                {{ foodReviews.length }} รีวิว
+              </p>
+            </div>
+
+            @if (foodReviews.length > 0) {
+              <!-- เลื่อนดูได้เมื่อรีวิวมีหลายรายการ -->
+              <div class="mt-4 space-y-4 lg:overflow-y-auto lg:pr-2">
+                @for (review of foodReviews; track review.id) {
+                  <article
+                    class="rounded-2xl border border-orange-100 bg-orange-50 p-4"
+                  >
+                    <div class="flex items-start justify-between gap-3">
+                      <div class="flex items-center gap-3">
+                        <div
+                          class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white shadow-sm"
+                        >
+                          👤
+                        </div>
+
+                        <div>
+                          <h3 class="font-bold text-gray-900">
+                            {{ getUserName(review.user_id) }}
+                          </h3>
+
+                          <p class="text-xs text-gray-500">
+                            ผู้รีวิว
+                          </p>
+                        </div>
+                      </div>
+
+                      <span
+                        class="shrink-0 rounded-full bg-yellow-100 px-3 py-1 text-sm font-semibold text-yellow-700"
+                      >
+                        ★ {{ review.rating }} / 5
+                      </span>
+                    </div>
+
+                    <p class="mt-3 text-sm leading-6 text-gray-700">
+                      {{ review.comment }}
+                    </p>
+                  </article>
+                }
+              </div>
+            } @else {
+              <div class="mt-4 rounded-2xl bg-orange-50 p-6 text-center">
+                <p class="text-4xl">💬</p>
+
+                <p class="mt-3 text-gray-600">
+                  เมนูนี้ยังไม่มีรีวิว
+                </p>
+              </div>
+            }
+          </div>
+        </div>
+      </section>
+    } @else {
+      <!-- กรณีไม่พบเมนูจาก id -->
+      <section class="rounded-2xl bg-white p-12 text-center shadow-sm">
+        <p class="text-5xl">🔍</p>
+
+        <h1 class="mt-4 text-2xl font-bold text-gray-900">
+          ไม่พบเมนูอาหาร
+        </h1>
+
+        <p class="mt-2 text-gray-500">
+          กรุณาตรวจสอบรหัสเมนูอาหารอีกครั้ง
+        </p>
+      </section>
+    }
+  </div>
+</main>

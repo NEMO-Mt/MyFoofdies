@@ -1,0 +1,141 @@
+<main class="min-h-screen bg-orange-50 px-4 py-10 sm:px-6">
+  <div class="mx-auto max-w-7xl">
+    <!-- ส่วนหัว -->
+    <section
+      class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between"
+    >
+      <div>
+        <p class="font-medium text-orange-500">
+          My Favorites
+        </p>
+
+        <h1 class="text-3xl font-bold text-gray-900">
+          เมนูอาหารที่ชอบ
+        </h1>
+
+        <p class="mt-2 text-gray-500">
+          มีรายการโปรดทั้งหมด {{ favoriteFoods.length }} เมนู
+        </p>
+      </div>
+
+      @if (favoriteFoods.length > 0) {
+        <button
+          type="button"
+          class="rounded-xl border border-red-200 bg-white px-5 py-3 font-medium text-red-500 transition hover:bg-red-500 hover:text-white"
+          (click)="clearFavorites()"
+        >
+          ล้างรายการทั้งหมด
+        </button>
+      }
+    </section>
+
+    @if (favoriteFoods.length > 0) {
+      <!-- รายการอาหารโปรด -->
+      <section
+        class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+      >
+        @for (food of favoriteFoods; track food.id) {
+          <article
+            class="group overflow-hidden rounded-2xl border border-orange-100 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl"
+          >
+            <!-- รูปอาหาร -->
+            <div class="relative overflow-hidden">
+              <img
+                class="h-52 w-full object-cover transition duration-300 group-hover:scale-105"
+                [src]="food.image_path"
+                [alt]="food.name"
+              />
+
+              <span
+                class="absolute left-3 top-3 rounded-full bg-orange-500 px-3 py-1 text-xs font-medium text-white"
+              >
+                {{ food.food_type }}
+              </span>
+
+              <span
+                class="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-white text-xl text-red-500 shadow-md"
+              >
+                ♥
+              </span>
+            </div>
+
+            <!-- ข้อมูลอาหาร -->
+            <div class="flex min-h-56 flex-col p-5">
+              <h2 class="text-xl font-bold text-gray-900">
+                {{ food.name }}
+              </h2>
+
+              <p class="mt-1 text-sm text-gray-600">
+                ร้าน {{ getRestaurantName(food.restaurant_id) }}
+              </p>
+
+              <div class="mt-5 flex items-end justify-between">
+                <div>
+                  <p class="text-xs text-gray-500">
+                    คะแนนรีวิว
+                  </p>
+
+                  <p class="mt-1 font-semibold text-yellow-600">
+                    ★ {{ getAverageRating(food.id) }} / 5
+                  </p>
+                </div>
+
+                <div class="text-right">
+                  <p class="text-xs text-gray-500">
+                    ราคา
+                  </p>
+
+                  <p class="text-2xl font-bold text-orange-600">
+                    ฿{{ food.price }}
+                  </p>
+                </div>
+              </div>
+
+              <!-- ปุ่มจัดการ -->
+              <div class="mt-auto flex gap-3 pt-6">
+                <a
+                  [routerLink]="['/foods', food.id]"
+                  class="flex-1 rounded-xl bg-orange-500 px-4 py-2 text-center font-medium text-white transition hover:bg-orange-600"
+                >
+                  ดูรายละเอียด
+                </a>
+
+                <button
+                  type="button"
+                  class="rounded-xl border border-red-200 px-4 py-2 font-medium text-red-500 transition hover:bg-red-50"
+                  (click)="removeFavorite(food.id)"
+                >
+                  ลบ
+                </button>
+              </div>
+            </div>
+          </article>
+        }
+      </section>
+    } @else {
+      <!-- กรณียังไม่มีรายการโปรด -->
+      <section class="mt-10 rounded-3xl bg-white p-12 text-center shadow-sm">
+        <div
+          class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-orange-100 text-4xl"
+        >
+          ♡
+        </div>
+
+        <h2 class="mt-6 text-2xl font-bold text-gray-900">
+          ยังไม่มีเมนูโปรด
+        </h2>
+
+        <p class="mt-2 text-gray-500">
+          ลองเลือกเมนูที่ชอบจากหน้าแรก แล้วกดปุ่มหัวใจ
+        </p>
+
+        <a
+          routerLink="/"
+          class="mt-6 inline-block rounded-xl bg-orange-500 px-6 py-3 font-medium text-white transition hover:bg-orange-600"
+        >
+          เลือกดูเมนูอาหาร
+        </a>
+      </section>
+    }
+  </div>
+</main>

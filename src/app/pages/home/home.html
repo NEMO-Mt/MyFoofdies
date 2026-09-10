@@ -1,0 +1,64 @@
+<main class="min-h-screen bg-orange-50 px-6 py-10">
+
+    <div class="mx-auto max-w-6xl">
+        <h1 class="mb-6 text-3xl font-bold text-gray-800">
+            ร้านอาหารทั้งหมด
+        </h1>
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            @for (restaurant of foodie.restaurants; track restaurant.id){
+            <a class="rounded-xl bg-white p-5 shadow-md" 
+            [routerLink]="['/restaurant', restaurant.id]">
+                <h2 class="mb-2 text-xl font-bold text-gray-800">{{restaurant.restaurant_type}}</h2>
+                <p class="mb-2 text-sm font-medium text-orange-500">{{restaurant.name}}</p>
+                <p class="text-sm text-gray-600">ที่อยู่ :{{restaurant.location}}</p>
+            </a>
+            }
+        </div>
+    </div>
+    <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6">
+        <h1 class="text-3xl font-bold text-gray-900">เมนูอาหารทั้งหมด</h1>
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            @for (food of foodie.foodItems ; track food.id){
+            <div class="group rounded-2xl border  border-orange-100 bg-white shadow-sm">
+                <div class="relative overflow-hidden">
+                    <img class="h-52 w-full object-cover" [src]="food.image_path" [alt]="food.name">
+                    <p
+                        class="absolute left-3 top-3 rounded-full bg-orange-500 px-3 py-1 text-xs font-medium text-white">
+                        {{food.food_type}}</p>
+                    <button type="button" class="absolute right-3 top-3 rounded-full bg-white p-2 shadow-md"
+        (click)="toggleFavorite(food.id)">
+        @if (isFavorite(food.id)) {
+        <span class="text-xl text-red-500">♥</span>
+        } @else {
+        <span class="text-xl text-gray-400">♡</span>
+        }
+    </button>
+                </div>
+                <div class="flex min-h-36 flex-col p-5">
+                    <p class="text-xl font-bold text-gray-900">{{food.name}}</p>
+                    <p class="text-sm text-gray-600">ร้านอาหาร : {{getRestaurantName(food.restaurant_id)}}</p>
+                    <div class="mt-auto flex items-end justify-between pt-5">
+                        <div>
+                            <p class="mb-1 text-xs text-gray-500">
+                                คะแนนรีวิว
+                            </p>
+                            <p class="rounded-full bg-yellow-50 px-3 py-1 text-sm font-semibold text-yellow-700">
+                                ★ {{ getAverageRating(food.id) }} / 5
+                            </p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xs text-gray-500">
+                                ราคา
+                            </p>
+
+                            <p class="text-2xl font-bold text-orange-600">
+                                ฿{{ food.price }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</main>

@@ -1,0 +1,23 @@
+<header class="sticky top-0 z-50 border-b border-orange-100 bg-white shadow-sm">
+    <nav class="mx-auto flex max-w-7xl flex-col items-center gap-4 px-6 py-4 md:flex-row">
+        <a routerLink="/" class="shrink-0 text-2xl font-bold text-orange-600">
+            MyFoodies</a>
+        <a routerLink="/search"
+            class="flex w-full max-w-xl items-center gap-3 rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-gray-500 transition hover:border-orange-500 hover:bg-orange-50 hover:text-orange-600">
+            <span class="text-lg">🔍</span>
+            <span>ค้นหาร้านอาหารหรือเมนู...</span>
+        </a>
+
+        <div class="flex shrink-0 items-center gap-2">
+            <a routerLink="/" routerLinkActive="bg-orange-500 text-white" [routerLinkActiveOptions]="{ exact: true }"
+                class="rounded-lg px-4 py-2 font-medium text-gray-600 hover:bg-orange-100 hover:text-orange-600">Home</a>
+            <a routerLink="/Favorites" routerLinkActive="bg-orange-500 text-white"
+                class="rounded-lg px-4 py-2 font-medium text-gray-600 hover:bg-orange-100 hover:text-orange-600">My
+                Favorites</a>
+            <a [routerLink] = "['/profile', 1]"
+            class="flex h-10 w-10 items-center justify-center rounded-full bg-orange-100">
+                👤
+            </a>
+        </div>
+    </nav>
+</header>
