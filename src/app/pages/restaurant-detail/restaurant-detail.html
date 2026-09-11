@@ -26,7 +26,6 @@
         </div>
 
         @if (restaurantFoodItems.length > 0) {
-          <!-- Grid ครอบเฉพาะการ์ดอาหาร -->
           <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             @for (food of restaurantFoodItems; track food.id) {
               <a [routerLink]="['/foods', food.id]"
@@ -38,7 +37,6 @@
                     [src]="food.image_path"
                     [alt]="food.name"
                   />
-
                   <span
                     class="absolute left-3 top-3 rounded-full bg-orange-500 px-3 py-1 text-xs font-medium text-white"
                   >

@@ -8,6 +8,7 @@ import { RouterLink } from '@angular/router';
   templateUrl: './home.html',
 })
 export class Home {
+  
   getAverageRating(foodId: number) {
   const reviews = this.foodie.foodReviews.filter(
     (review) => review.food_item_id === foodId
@@ -26,6 +27,10 @@ export class Home {
   return (totalRating / reviews.length).toFixed(1);
 }
 
+getRestaurantName(restaurantId: number) {
+  const restaurant = this.foodie.restaurants.find((restaurant) => restaurant.id === restaurantId);
+  return restaurant ? restaurant.name : 'ไม่พบร้านอาหาร';
+}
 
 isFavorite(foodId: number) {
   return this.favorieFoodID.includes(foodId);
@@ -39,10 +44,6 @@ toggleFavorite(foodId: number) {
   }
   localStorage.setItem('favoriteFoodIDs', JSON.stringify(this.favorieFoodID));
 }
-getRestaurantName(restaurantId: number) {
-  const restaurant = this.foodie.restaurants.find((restaurant) => restaurant.id === restaurantId);
-  return restaurant ? restaurant.name : 'ร้านอาหารไม่พบ';
-}
    foodie = foodieData;
    favorieFoodID : number[] =[];
    constructor() {
@@ -51,6 +52,5 @@ getRestaurantName(restaurantId: number) {
     if(savedFavorites) {
       this.favorieFoodID = JSON.parse(savedFavorites);
     }
-
    }
 }

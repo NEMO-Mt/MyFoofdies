@@ -24,7 +24,6 @@ export class RestaurantDetail {
       this.loadRestaurant();
     });
   }
-
    loadRestaurant() {
     this.restaurant = this.foodie.restaurants.find(
       (restaurant) => restaurant.id === this.restaurantId

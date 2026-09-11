@@ -22,6 +22,7 @@ export class FoodDetail {
   foodReviews = this.foodie.foodReviews.filter(
     (review) => review.food_item_id === 0
   );
+
   constructor(private route: ActivatedRoute) {
     this.route.params.subscribe((params) => {
       this.foodId = Number(params['id']);
@@ -42,9 +43,6 @@ export class FoodDetail {
     this.foodReviews = this.foodie.foodReviews.filter(
       (review) => review.food_item_id === this.foodId
     );
-    console.log('เมนู:', this.food);
-    console.log('ร้าน:', this.restaurant);
-    console.log('รีวิว:', this.foodReviews);
 
   }
   getUserName(userId: number) {
@@ -54,6 +52,7 @@ export class FoodDetail {
 
     return user ? user.name : 'ไม่พบผู้ใช้งาน';
   }
+
    getAverageRating() {
     if (this.foodReviews.length === 0) {
       return 'ยังไม่มีรีวิว';
